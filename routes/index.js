@@ -1,4 +1,5 @@
 var express = require('express');
+var app = express();
 var router = express.Router();
 var multer  = require('multer');
 var upload = multer({ dest: 'public/uploads/'});
@@ -11,16 +12,17 @@ router.get('/', function(req, res, next) {
 
 router.post('/store', upload.single('displayImage'), function(req, res, next) {
   var databaseObj = new DatabaseManager();
+  path = req.file.path.replace("public", "")
   databaseObj.store(req.file.filename, req.file.path, function(err, result) {
     if (err) {
       res.render('error',{message: err,status : 404});
     } else {
-      res.render('image',{key: req.file.filename, url: req.file.path});
+      res.render('image',{key: req.file.filename, url: path});
     }
   });
 });
 
-router.get('/images/:key', function(req, res, next) {
+router.get('/views/uploaded/:key', function(req, res, next) {
   var databaseObj = new DatabaseManager();
   databaseObj.find(req.params.key, function(err, result) {
     if (err) {
