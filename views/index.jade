@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  form(action="/store", method="post", enctype="multipart/form-data")
+    input(type="file", name="displayImage" required=true)
+    button.btn.btn-large.btn-primary(type="submit") Save
